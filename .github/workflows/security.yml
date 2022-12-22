@@ -1,0 +1,30 @@
+# https://github.com/marketplace/actions/slither-action
+# https://github.com/crytic/echidna-action
+
+name: Security Analysis
+
+on: []
+# on: [push]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.2.0
+        continue-on-error: true
+        with:
+          node-version: 16
+          target: "backend/"
+      - name: Run Echidna
+        uses: crytic/echidna-action@v2
+        with:
+          solc-version: 0.8.7
+          files: backend/
+          contract: EchidnaTest
+          config: backend/echidna_config.yaml
+          crytic-args: --hardhat-ignore-compile

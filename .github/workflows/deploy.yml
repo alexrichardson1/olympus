@@ -1,0 +1,70 @@
+name: Deploy to DockerHub & AWS EB
+
+# on:
+#   push:
+#     branches:
+#       - "master"
+on: []
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+      - name: Build and push nginx
+        uses: docker/build-push-action@v2
+        with:
+          context: ./nginx
+          push: true
+          tags: alexrichardson1/olympus-nginx:latest
+      - name: Build and push frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          push: true
+          tags: alexrichardson1/olympus-frontend:latest
+      - name: Build and push backend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend
+          push: true
+          tags: alexrichardson1/olympus-backend:latest
+  aws-eb:
+    runs-on: ubuntu-latest
+    needs: [docker]
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Generate deployment package
+        run: zip -r deploy-${{ github.sha }}.zip . -x '*.git*'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "eu-west-2"
+
+      - name: Upload package to S3 bucket
+        run: aws s3 cp deploy-${{ github.sha }}.zip s3://0lympus/
+
+      - name: Create new ElasticBeanstalk Application Version
+        run: |
+          aws elasticbeanstalk create-application-version \
+          --application-name 0lympus \
+          --source-bundle S3Bucket="0lympus",S3Key="deploy-${{ github.sha }}.zip" \
+          --version-label "${{ github.sha }}" \
+          --description "commit-sha-${{ github.sha }}"
+      - name: Deploy new ElasticBeanstalk Application Version
+        run: aws elasticbeanstalk update-environment --environment-name 0lympus-env --version-label ${{ github.sha }}

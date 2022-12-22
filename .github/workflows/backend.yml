@@ -1,0 +1,33 @@
+name: Backend CI
+
+on:
+  push:
+    branches-ignore: []
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn && cd backend/ && yarn
+      - name: Compile
+        run: cd backend/ && yarn compile
+      - name: Build
+        run: cd backend/ && yarn build
+      - name: Jest
+        run: cd backend/ && yarn jest src/test/
+      - name: Test
+        run: cd backend/ && yarn test
+      - name: Coverage
+        run: cd backend/ && yarn coverage

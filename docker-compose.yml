@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+  nginx:
+    depends_on:
+      - frontend
+      - backend
+    image: alexrichardson1/olympus-nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+  frontend:
+    image: alexrichardson1/olympus-frontend:latest
+    restart: on-failure
+  backend:
+    image: alexrichardson1/olympus-backend:latest
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+    env_file:
+      - .env
+    restart: on-failure

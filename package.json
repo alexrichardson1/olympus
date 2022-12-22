@@ -1,0 +1,34 @@
+{
+  "name": "olympus",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "format": "prettier --ignore-path .gitignore --write",
+    "tslint": "eslint --ignore-path .gitignore",
+    "solhint": "solhint --max-warnings 0 --ignore-path .gitignore backend/contracts/**/*.sol"
+  },
+  "dependencies": {
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-jest": "^26.5.3",
+    "eslint-plugin-mocha": "^10.0.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-tsdoc": "^0.2.16",
+    "prettier": "^2.6.2",
+    "prettier-plugin-organize-imports": "^2.3.4",
+    "prettier-plugin-solidity": "^1.0.0-beta.19",
+    "solhint": "^3.3.7",
+    "solhint-plugin-prettier": "^0.0.5",
+    "tsdoc": "^0.0.4",
+    "typedoc": "^0.22.15"
+  }
+}

@@ -1,0 +1,29 @@
+name: Node CI
+
+on:
+  push:
+    branches-ignore: []
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn
+      - name: Format
+        run: yarn prettier --ignore-path .gitignore -c .
+      # - name: Lint TypeScript/JavaScript
+      #   run: yarn tslint --max-warnings 0 .
+      - name: Lint Smart Contracts
+        run: yarn solhint

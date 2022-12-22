@@ -1,0 +1,66 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/server.ts",
+  "scripts": {
+    "compile": "hardhat compile",
+    "build": "tsc --project tsconfig.json",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage --solcoverjs .solcover.js",
+    "start": "nodemon",
+    "start-production": "node build/src/server.js",
+    "deploy": "hardhat run --network rinkeby scripts/deployment.ts"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "aws-sdk": "^2.1132.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.0",
+    "fast-csv": "^4.3.6",
+    "mongoose": "^6.3.2",
+    "nodemon": "^2.0.16",
+    "path": "^0.12.7",
+    "sharp": "^0.30.4",
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@ethersproject/abi": "^5.6.1",
+    "@ethersproject/bytes": "^5.6.1",
+    "@ethersproject/providers": "^5.6.4",
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@typechain/ethers-v5": "^10.0.0",
+    "@typechain/hardhat": "^6.0.0",
+    "@types/chai": "^4.3.1",
+    "@types/jest": "^28.1.3",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^17.0.31",
+    "@types/sharp": "^0.30.2",
+    "@types/supertest": "^2.0.12",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.5",
+    "hardhat": "^2.9.3",
+    "hardhat-gas-reporter": "^1.0.8",
+    "jest": "^28.1.1",
+    "mongodb-memory-server": "^8.7.1",
+    "prettier": "^2.6.2",
+    "solidity-coverage": "^0.7.21",
+    "supertest": "^6.2.3",
+    "ts-jest": "^28.0.5",
+    "ts-node": "^10.7.0",
+    "typechain": "^8.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "build"
+    ]
+  }
+}
